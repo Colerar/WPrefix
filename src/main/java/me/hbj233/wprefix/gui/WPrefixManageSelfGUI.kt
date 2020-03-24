@@ -37,7 +37,7 @@ class WPrefixManageSelfGUI(parent: FormWindow, player: Player) : ResponsibleForm
     }
 
     override fun onClosed(player: Player) {
-        goBack(player)
+        player.showFormWindow(parent)
     }
 
 }
@@ -62,7 +62,7 @@ class WPrefixManageSelfSubGUI(parent: FormWindow, private val prefix : String, d
             }
 
         } else {
-            if (!targetPlayerData.usingPrefixName.contains(prefix)) {
+            if (targetPlayerData.usingPrefixName.contains(prefix)) {
                 targetPlayerData.usingPrefixName.remove(prefix)
                 player.sendMessage("${WPrefixPlugin.title}&e操作成功, 您关闭了 $prefix 称号.".color())
             } else {
@@ -73,6 +73,6 @@ class WPrefixManageSelfSubGUI(parent: FormWindow, private val prefix : String, d
     }
 
     override fun onClosed(player: Player) {
-        goBack(player)
+        player.showFormWindow(parent)
     }
 }

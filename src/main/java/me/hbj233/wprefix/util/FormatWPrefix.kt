@@ -13,32 +13,35 @@ import top.wetabq.easyapi.utils.color
 fun getFormatWPrefix(message : String, player: Player): String {
     var prefix = ""
     val wplayerConfig = wprefixPlayerConfig.safeGetData(player.name)
+
     if (wplayerConfig.usingPrefixName.isNotEmpty()) {
 
         val wprefixCollection: MutableCollection<WPrefixData> = mutableListOf()
 
-        wplayerConfig.usingPrefixName.forEach {
-            val wprefixConfig = wprefixConfig.safeGetData(it)
-            wprefixCollection.add(wprefixConfig)
-        }
+        if (wplayerConfig.usingPrefixName.isNotEmpty()){
+            wplayerConfig.usingPrefixName.forEach {
+                val wprefixConfig = wprefixConfig.safeGetData(it)
+                wprefixCollection.add(wprefixConfig)
+            }
 
-        wprefixCollection.sortedBy { it.priority }
+            wprefixCollection.sortedBy { it.priority }
 
-        wprefixCollection.forEach {
-            val prefixContent = it.content.color()
-            if (it.canStack) {
-                when (it.position) {
-                    LEFT -> prefix = prefixContent + prefix
-                    RIGHT -> prefix += prefixContent
-                }
-            } else if (wprefixCollection.size == 1 && !it.canStack) {
-                when (it.position) {
-                    LEFT -> prefix = prefixContent + prefix
-                    RIGHT -> prefix += prefixContent
-                }
-            } else player.sendMessage("${WPrefixPlugin.title}&c 您佩戴了一个不可堆叠的称号 (${it.content}&r), 因此其无法显示.".color())
+            wprefixCollection.forEach {
+                val prefixContent = it.content.color()
+                if (it.canStack) {
+                    when (it.position) {
+                        LEFT -> prefix = prefixContent + prefix
+                        RIGHT -> prefix += prefixContent
+                    }
+                } else if (wprefixCollection.size == 1 && !it.canStack) {
+                    when (it.position) {
+                        LEFT -> prefix = prefixContent + prefix
+                        RIGHT -> prefix += prefixContent
+                    }
+                } else player.sendMessage("${WPrefixPlugin.title}&c 您佩戴了一个不可堆叠的称号 (${it.content}&r), 因此其无法显示.".color())
+            }
         }
-        return message.replace(WPREFIX_PREFIX_PLACEHOLDER, prefix)
     }
-    return message
+
+    return message.replace(WPREFIX_PREFIX_PLACEHOLDER, prefix)
 }

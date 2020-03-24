@@ -102,7 +102,7 @@ object WPrefixModule : SimpleEasyAPIModule() {
 
         })
 
-        SimplePluginTaskAPI.delayRepeating(20,1,object : (PluginTask<EasyAPI>, Int) -> Unit {
+        SimplePluginTaskAPI.delayRepeating(40,1,object : (PluginTask<EasyAPI>, Int) -> Unit {
             override fun invoke(p1: PluginTask<EasyAPI>, p2: Int) {
                 val playerCollection = WPrefixPlugin.instance.server.onlinePlayers.values
                 val targetPlayerConfig  = wprefixPlayerConfig
@@ -111,12 +111,16 @@ object WPrefixModule : SimpleEasyAPIModule() {
                         val targetPrefixConfig = wprefixConfig.safeGetData(it)
                         val buffId = targetPrefixConfig.buffId
                         val buffLevel = targetPrefixConfig.buffLevel
-                        val effect = Effect.getEffect(buffId)
-                        if (effect != null){
-                            effect.amplifier = buffLevel
-                            effect.duration = 20
-                            player.addEffect(effect)
+
+                        if (buffId != 0){
+                            val effect = Effect.getEffect(buffId)
+                            if (effect != null) {
+                                effect.amplifier = buffLevel
+                                effect.duration = 40
+                                player.addEffect(effect)
+                            }
                         }
+
                     }
                 }
             }

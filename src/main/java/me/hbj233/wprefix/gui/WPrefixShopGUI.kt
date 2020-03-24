@@ -50,7 +50,7 @@ class WPrefixShopGUI(parent: FormWindow) : ResponsibleFormWindowCustom(
     }
 
     override fun onClosed(player: Player) {
-        goBack(player)
+        player.showFormWindow(parent)
     }
 
 }
@@ -77,8 +77,11 @@ class WPrefixShopSubGUI(parent: FormWindow,
             addElement(ElementLabel("&r&7能否堆叠:&c&l不能&r".color()))
         }
         addElement(ElementLabel("&r&7价格:&e&l${targetWPrefixData.price}".color()))
-        addElement(ElementLabel("&r&7药水效果:&e&l${Effect.getEffect(targetWPrefixData.buffId).name}".color()))
-        addElement(ElementLabel("&r&7药水等级:&e&l${targetWPrefixData.buffLevel}"))
+        val effectName = if (targetWPrefixData.buffId != 0){
+            Effect.getEffect(targetWPrefixData.buffId)?.name
+        } else { "无" }
+        addElement(ElementLabel("&r&7药水效果:&e&l$effectName".color()))
+        addElement(ElementLabel("&r&7药水等级:&e&l${targetWPrefixData.buffLevel}".color()))
         addElement(ElementToggle("确定购买",false))
         addElement(ElementToggle("购买后是否立刻佩戴?",false))
 
@@ -87,13 +90,24 @@ class WPrefixShopSubGUI(parent: FormWindow,
     override fun onClicked(response: FormResponseCustom, player: Player) {
         if (response.getToggleResponse(8)){
             targetPlayerData.ownPrefixName.add(targetWPrefixKey)
-            WPrefixModule.economyAPI.reduceMoney(player, targetWPrefixData.price.toDouble())
-            var successMsg: String = "${WPrefixPlugin.title} &e你成功花费 ${targetWPrefixData.price} 购买了 $targetWPrefixKey 称号".color()
-            if (response.getToggleResponse(9)){
-                targetPlayerData.usingPrefixName.add(targetWPrefixKey)
-                successMsg += "&e 并成功地佩戴了它.".color()
+            WPrefixModule.economyAPI.getMoney(player)?.let {
+                if ((it >= targetWPrefixData.price)){
+                    WPrefixModule.economyAPI.reduceMoney(player, targetWPrefixData.price.toDouble())
+                    if (targetPlayerData.ownPrefixName.contains(targetWPrefixKey)){
+                        targetPlayerData.ownPrefixName.add(targetWPrefixKey)
+                    } else {
+                        player.sendMessage("${WPrefixPlugin.title}&c&l您已经拥有了此称号 (${targetWPrefixData.price}).".color())
+                    }
+                    var successMsg: String = "${WPrefixPlugin.title} &e你成功花费 ${targetWPrefixData.price} 购买了 $targetWPrefixKey 称号".color()
+                    if (response.getToggleResponse(9)){
+                        targetPlayerData.usingPrefixName.add(targetWPrefixKey)
+                        successMsg += "&e 并成功地佩戴了它.".color()
+                    }
+                    player.sendMessage(successMsg)
+                } else {
+                    player.sendMessage("${WPrefixPlugin.title}&c&l您拥有的货币 ($it) 不足以购买此称号 (${targetWPrefixData.price}).".color())
+                }
             }
-            player.sendMessage(successMsg)
         } else {
             player.sendMessage("${WPrefixPlugin.title}&c&l你取消了本次购买.".color())
         }
