@@ -5,7 +5,7 @@ import me.hbj233.wprefix.WPrefixPlugin
 import moe.him188.gui.window.ResponsibleFormWindowSimple
 import top.wetabq.easyapi.utils.color
 
-class WPrefixMainGUI(private val player: Player) : ResponsibleFormWindowSimple(
+class WPrefixMainGUI(player: Player) : ResponsibleFormWindowSimple(
         "${WPrefixPlugin.title} 主面板".color(),
         "&e&l您需要进行什么操作?".color()
 ) {
@@ -20,11 +20,11 @@ class WPrefixMainGUI(private val player: Player) : ResponsibleFormWindowSimple(
     }*/
 
     init {
-        addButton("管理自己称号") { player -> player.showFormWindow(WPrefixManageSelfGUI(this, player)) }
-        addButton("称号商店") { player -> player.showFormWindow(WPrefixShopGUI(this))}
+        addButton("管理自己称号") { p -> p.showFormWindow(WPrefixManageSelfGUI(this, player)) }
+        addButton("称号商店") { p -> p.showFormWindow(WPrefixShopGUI(this))}
         if (player.isOp) {
-            addButton("管理他人称号") { player -> run { if (player.isOp) player.showFormWindow(WPrefixManageOtherGUI(this)) } }
-            addButton("配置称号") { player -> run { if (player.isOp) player.showFormWindow(WPrefixConfigGUI(this)) } }
+            addButton("管理他人称号") { p -> run { if (p.isOp) p.showFormWindow(WPrefixManageOtherGUI(this)) } }
+            addButton("配置称号") { p -> run { if (p.isOp) p.showFormWindow(WPrefixConfigGUI(this)) } }
         }
     }
 
