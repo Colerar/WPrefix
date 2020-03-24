@@ -6,6 +6,7 @@ import cn.nukkit.form.element.ElementLabel
 import cn.nukkit.form.element.ElementToggle
 import cn.nukkit.form.response.FormResponseCustom
 import cn.nukkit.form.window.FormWindow
+import cn.nukkit.potion.Effect
 import me.hbj233.wprefix.WPrefixPlugin
 import me.hbj233.wprefix.data.LEFT
 import me.hbj233.wprefix.data.PlayerWPrefixData
@@ -76,17 +77,19 @@ class WPrefixShopSubGUI(parent: FormWindow,
             addElement(ElementLabel("&r&7能否堆叠:&c&l不能&r".color()))
         }
         addElement(ElementLabel("&r&7价格:&e&l${targetWPrefixData.price}".color()))
+        addElement(ElementLabel("&r&7药水效果:&e&l${Effect.getEffect(targetWPrefixData.buffId).name}".color()))
+        addElement(ElementLabel("&r&7药水等级:&e&l${targetWPrefixData.buffLevel}"))
         addElement(ElementToggle("确定购买",false))
         addElement(ElementToggle("购买后是否立刻佩戴?",false))
 
     }
 
     override fun onClicked(response: FormResponseCustom, player: Player) {
-        if (response.getToggleResponse(6)){
+        if (response.getToggleResponse(8)){
             targetPlayerData.ownPrefixName.add(targetWPrefixKey)
             WPrefixModule.economyAPI.reduceMoney(player, targetWPrefixData.price.toDouble())
             var successMsg: String = "${WPrefixPlugin.title} &e你成功花费 ${targetWPrefixData.price} 购买了 $targetWPrefixKey 称号".color()
-            if (response.getToggleResponse(7)){
+            if (response.getToggleResponse(9)){
                 targetPlayerData.usingPrefixName.add(targetWPrefixKey)
                 successMsg += "&e 并成功地佩戴了它.".color()
             }

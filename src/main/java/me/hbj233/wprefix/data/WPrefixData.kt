@@ -9,6 +9,8 @@ data class WPrefixData(
         //数字越高越靠前
         val priority : Int,
         val canStack : Boolean,
+        val buffId: Int,
+        val buffLevel: Int,
         val price : Int
 ) {
     init {

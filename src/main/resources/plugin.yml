@@ -8,3 +8,4 @@ depend:
   - "KotlinLib"
   - "EasyAPI"
   - "GUI"
+  - "EconomyAPI"

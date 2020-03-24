@@ -52,10 +52,22 @@ class WPrefixManageSelfSubGUI(parent: FormWindow, private val prefix : String, d
     }
 
     override fun onClicked(response: FormResponseCustom, player: Player) {
+        val targetPlayerData = WPrefixModule.wprefixPlayerConfig.safeGetData(player.name)
         if (response.getToggleResponse(0)) {
-            WPrefixModule.wprefixPlayerConfig.safeGetData(player.name).usingPrefixName.add(prefix)
+            if (!targetPlayerData.usingPrefixName.contains(prefix)){
+                targetPlayerData.usingPrefixName.add(prefix)
+                player.sendMessage("${WPrefixPlugin.title}&e操作成功, 您开启了 $prefix 称号.".color())
+            } else {
+                player.sendMessage("${WPrefixPlugin.title}&c&l操作失败, 您已经开启了 $prefix 称号.".color())
+            }
+
         } else {
-            WPrefixModule.wprefixPlayerConfig.safeGetData(player.name).usingPrefixName.remove(prefix)
+            if (!targetPlayerData.usingPrefixName.contains(prefix)) {
+                targetPlayerData.usingPrefixName.remove(prefix)
+                player.sendMessage("${WPrefixPlugin.title}&e操作成功, 您关闭了 $prefix 称号.".color())
+            } else {
+                player.sendMessage("${WPrefixPlugin.title}&e操作失败, 您没有开启 $prefix 称号, 因此无法关闭.".color())
+            }
         }
         WPrefixModule.wprefixPlayerConfig.save()
     }

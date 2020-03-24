@@ -54,8 +54,10 @@ class WPrefixConfigGUI(parent: FormWindow)  : ResponsibleFormWindowSimple(
         this.setTranslateMap(linkedMapOf(
                 "content" to "内容",
                 "description" to "介绍",
-                "position" to "位置只能填 LEFT 或者 RIGHT",
+                "position" to "位置(只能填 LEFT 或者 RIGHT)",
                 "priority" to "优先级",
+                "buffId" to "药水效果ID",
+                "buffLevel" to "效果等级",
                 "canStack" to "能否堆叠",
                 "price" to "价格"
         ))

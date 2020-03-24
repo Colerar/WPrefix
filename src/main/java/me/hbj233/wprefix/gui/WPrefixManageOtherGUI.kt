@@ -81,7 +81,7 @@ class WPrefixManageOtherSubGUI (parent: FormWindow,private val p: Player) : Resp
             "给予" -> {
                 if (!targetConfig.contains(targetPrefix)) {
                     targetConfig.add(targetPrefix)
-                    player.sendMessage("&c操作成功, 给玩家 (${p.name}) 添加了此称号 ($targetPrefix) .".color())
+                    player.sendMessage("&e操作成功, 给玩家 (${p.name}) 添加了此称号 ($targetPrefix) .".color())
                 } else {
                     player.sendMessage("&c操作失败, 玩家已有此称号.".color())
                 }
@@ -89,9 +89,9 @@ class WPrefixManageOtherSubGUI (parent: FormWindow,private val p: Player) : Resp
             "删除" -> {
                 if (targetConfig.contains(targetPrefix)){
                     targetConfig.remove(targetPrefix)
+                    player.sendMessage("&c操作成功, 把玩家 (${p.name}) 的称号 ($targetPrefix) 删除了.".color())
                 } else {
                     player.sendMessage("&c操作失败, 玩家没有此称号.".color())
-                    player.sendMessage("&c操作成功, 给玩家 (${p.name}) 添加了此称号 ($targetPrefix) .".color())
                 }
             }
         }

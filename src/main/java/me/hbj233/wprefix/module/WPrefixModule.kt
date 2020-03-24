@@ -2,12 +2,15 @@ package me.hbj233.wprefix.module
 
 import cn.nukkit.event.player.PlayerChatEvent
 import cn.nukkit.event.player.PlayerJoinEvent
+import cn.nukkit.potion.Effect
+import cn.nukkit.scheduler.PluginTask
 import me.hbj233.wprefix.WPrefixPlugin
 import me.hbj233.wprefix.WPrefixPlugin.Companion.title
 import me.hbj233.wprefix.data.LEFT
 import me.hbj233.wprefix.data.PlayerWPrefixData
 import me.hbj233.wprefix.data.WPrefixData
 import me.hbj233.wprefix.util.getFormatWPrefix
+import top.wetabq.easyapi.EasyAPI
 import top.wetabq.easyapi.api.defaults.*
 import top.wetabq.easyapi.config.defaults.SimpleConfigEntry
 import top.wetabq.easyapi.config.encoder.advance.SimpleCodecEasyConfig
@@ -31,7 +34,8 @@ object WPrefixModule : SimpleEasyAPIModule() {
     const val WPREFIX_CONFIG_NAME = "wprefixConfig"
     const val WPREFIX_PREFIX_CONFIG_NAME = "wprefixPrefixConfig"
     const val WPREFIX_PLAYER_CONFIG_NAME = "wprefixPlayerConfig"
-    const val WPREFIX_LISTENER_NAME = "wprefixListener"
+//    const val WPREFIX_LISTENER_NAME = "wprefixListener"
+    const val WPREFIX_TASK_NAME = "wprefixTask"
     const val WPREFIX_COMMAND_NAME = "wprefixCommand"
     const val WPREFIX_FORMAT = "wprefixFormat"
 
@@ -71,7 +75,7 @@ object WPrefixModule : SimpleEasyAPIModule() {
 
         wprefixConfig = object : SimpleCodecEasyConfig<WPrefixData>(
                 WPREFIX_PREFIX_CONFIG_NAME, WPrefixPlugin.instance, WPrefixData::class.java,
-                WPrefixData("""&a[2020]""","This is a example.", LEFT, 0, canStack = true, price = 2020)
+                WPrefixData("""&a[2020]""","This is a example.", LEFT, 0, canStack = true,buffId = 0, buffLevel = 1, price = 2020)
         ){}
         wprefixConfig.init()
 
@@ -97,6 +101,28 @@ object WPrefixModule : SimpleEasyAPIModule() {
             }
 
         })
+
+        SimplePluginTaskAPI.delayRepeating(20,1,object : (PluginTask<EasyAPI>, Int) -> Unit {
+            override fun invoke(p1: PluginTask<EasyAPI>, p2: Int) {
+                val playerCollection = WPrefixPlugin.instance.server.onlinePlayers.values
+                val targetPlayerConfig  = WPrefixModule.wprefixPlayerConfig
+                playerCollection.forEach { player ->
+                    targetPlayerConfig.safeGetData(player.name).usingPrefixName.forEach {
+                        val targetPrefixConfig = WPrefixModule.wprefixConfig.safeGetData(it)
+                        val buffId = targetPrefixConfig.buffId
+                        val buffLevel = targetPrefixConfig.buffLevel
+                        val effect = Effect.getEffect(buffId)
+                        if (effect != null){
+                            effect.amplifier = buffLevel
+                            effect.duration = 20
+                            player.addEffect(effect)
+                        }
+                    }
+                }
+            }
+
+        })
+
 
     }
 
