@@ -10,3 +10,4 @@
 - [KotlinLib](https://nukkitx.com/resources/kotlinlib.48/)
 - [GUI](https://github.com/Him188/GUI)
 - [EasyAPI](https://github.com/WetABQ/EasyAPI-Nukkit)
+- [EconomyAPI](https://nukkitx.com/resources/economyapi.14/)
