@@ -1,7 +1,7 @@
 name: WPrefix
 main: me.hbj233.wprefix.WPrefixPlugin
 version: 1.0.0
-api: ["1.0.0"]
+api: ["1.1.0"]
 load: STARTUP
 author: HBJ233
 depend:

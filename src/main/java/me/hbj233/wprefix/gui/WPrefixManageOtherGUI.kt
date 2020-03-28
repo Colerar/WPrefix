@@ -94,6 +94,9 @@ class WPrefixManageOtherSubGUI (parent: FormWindow,private val p: Player) : Resp
                     player.sendMessage("&c操作失败, 玩家没有此称号.".color())
                 }
             }
+            else -> { player.sendMessage("&c操作失败.")}
+        }.also {
+            WPrefixModule.wprefixPlayerConfig.save()
         }
     }
 

@@ -47,7 +47,7 @@ object WPrefixModule : SimpleEasyAPIModule() {
             WPrefixPlugin.instance,
             MODULE_NAME,
             AUTHOR,
-            ModuleVersion(1,0,0)
+            ModuleVersion(1,1,0)
     )
 
     override fun moduleRegister() {
@@ -67,10 +67,16 @@ object WPrefixModule : SimpleEasyAPIModule() {
             override fun format(message: String): String = message.replace(TITLE_FORMAT,title)
         })
 
+        MessageFormatAPI.registerFormatter(WPREFIX_FORMAT, String::class.java,
+                object : MessageFormatter<String>{
+                    override fun format(message: String, data: String): String =
+                            getFormatWPrefix(message, data)
+                })
+
         MessageFormatAPI.registerFormatter(WPREFIX_FORMAT, PlayerChatEvent::class.java,
                 object : MessageFormatter<PlayerChatEvent>{
                     override fun format(message: String, data: PlayerChatEvent): String =
-                            getFormatWPrefix(message, data.player)
+                            getFormatWPrefix(message, data.player.name)
                 })
 
         wprefixConfig = object : SimpleCodecEasyConfig<WPrefixData>(
