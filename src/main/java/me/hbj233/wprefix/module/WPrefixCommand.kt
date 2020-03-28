@@ -10,9 +10,7 @@ import top.wetabq.easyapi.command.EasySubCommand
 object WPrefixCommand : EasyCommand("wprefix", "WPrefix's Command"){
 
     init {
-
-        val wPlayerConfig = WPrefixModule.wprefixPlayerConfig
-        val wPrefixConfig = WPrefixModule.wprefixConfig
+        this.aliases = arrayOf("wpf")
 
         subCommand.add(object : EasySubCommand("gui"){
             override fun execute(sender: CommandSender, label: String, args: Array<out String>): Boolean {
