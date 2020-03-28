@@ -43,11 +43,11 @@ class WPrefixConfigGUI(parent: FormWindow)  : ResponsibleFormWindowSimple(
             }
         }
 
-        this.addButton("返回") { player -> goBack(player) }
+        this.addButton("返回") { player -> player.showFormWindow(WPrefixMainGUI(player)) }
     }
 
     override fun onClosed(player: Player) {
-        goBack(player)
+        player.showFormWindow(WPrefixMainGUI(player))
     }
 
     private fun ConfigGUI<WPrefixData>.setWPrefixConfigGUI() {

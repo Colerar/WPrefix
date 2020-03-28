@@ -58,7 +58,7 @@ class WPrefixManageOtherGUI(parent: FormWindow) : ResponsibleFormWindowCustom(
 
 
     override fun onClosed(player: Player) {
-        goBack(player)
+        player.showFormWindow(WPrefixMainGUI(player))
     }
 
 }
@@ -99,5 +99,10 @@ class WPrefixManageOtherSubGUI (parent: FormWindow,private val p: Player) : Resp
             WPrefixModule.wprefixPlayerConfig.save()
         }
     }
+
+    override fun onClosed(player: Player) {
+        player.showFormWindow(WPrefixManageOtherGUI(WPrefixMainGUI(player)))
+    }
+
 
 }

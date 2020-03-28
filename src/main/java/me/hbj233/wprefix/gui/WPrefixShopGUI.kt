@@ -50,7 +50,7 @@ class WPrefixShopGUI(parent: FormWindow) : ResponsibleFormWindowCustom(
     }
 
     override fun onClosed(player: Player) {
-        player.showFormWindow(parent)
+        player.showFormWindow(WPrefixMainGUI(player))
     }
 
 }

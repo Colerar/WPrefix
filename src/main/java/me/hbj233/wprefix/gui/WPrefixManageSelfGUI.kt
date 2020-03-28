@@ -37,7 +37,7 @@ class WPrefixManageSelfGUI(parent: FormWindow, player: Player) : ResponsibleForm
     }
 
     override fun onClosed(player: Player) {
-        player.showFormWindow(parent)
+        player.showFormWindow(WPrefixMainGUI(player))
     }
 
 }
