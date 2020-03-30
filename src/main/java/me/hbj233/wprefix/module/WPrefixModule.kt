@@ -3,14 +3,12 @@ package me.hbj233.wprefix.module
 import cn.nukkit.event.player.PlayerChatEvent
 import cn.nukkit.event.player.PlayerJoinEvent
 import cn.nukkit.potion.Effect
-import cn.nukkit.scheduler.PluginTask
 import me.hbj233.wprefix.WPrefixPlugin
 import me.hbj233.wprefix.WPrefixPlugin.Companion.title
 import me.hbj233.wprefix.data.LEFT
 import me.hbj233.wprefix.data.PlayerWPrefixData
 import me.hbj233.wprefix.data.WPrefixData
 import me.hbj233.wprefix.util.getFormatWPrefix
-import top.wetabq.easyapi.EasyAPI
 import top.wetabq.easyapi.api.defaults.*
 import top.wetabq.easyapi.config.defaults.SimpleConfigEntry
 import top.wetabq.easyapi.config.encoder.advance.SimpleCodecEasyConfig
@@ -108,8 +106,7 @@ object WPrefixModule : SimpleEasyAPIModule() {
 
         })
 
-        SimplePluginTaskAPI.delayRepeating(40,1,object : (PluginTask<EasyAPI>, Int) -> Unit {
-            override fun invoke(p1: PluginTask<EasyAPI>, p2: Int) {
+        SimplePluginTaskAPI.delayRepeating(40,1) { _, _ ->
                 val playerCollection = WPrefixPlugin.instance.server.onlinePlayers.values
                 val targetPlayerConfig  = wprefixPlayerConfig
                 playerCollection.forEach { player ->
@@ -129,9 +126,7 @@ object WPrefixModule : SimpleEasyAPIModule() {
 
                     }
                 }
-            }
-
-        })
+        }
 
 
     }

@@ -43,6 +43,33 @@ class WPrefixConfigGUI(parent: FormWindow)  : ResponsibleFormWindowSimple(
             }
         }
 
+        this.addButton("&c删除配置".color()) { player ->
+            player.showFormWindow(object : ResponsibleFormWindowSimple("${WPrefixPlugin.title} 配置删除页面".color(),"&e请选择一个配置以删除".color()) {
+                init {
+                    val targetConfig = WPrefixModule.wprefixConfig.simpleConfig
+                    targetConfig.entries.forEach { it ->
+                        this.addButton(it.key) { player ->
+                            player.showFormWindow(object : ResponsibleFormWindowSimple("", "&c&l你确定删除 ${it.key}?".color()) {
+                                init {
+                                    addButton("&c&l确定".color()) { player ->
+                                        WPrefixModule.wprefixPlayerConfig.simpleConfig.forEach { it2 ->
+                                            it2.value.ownPrefixName.remove(it.key)
+                                            it2.value.usingPrefixName.remove(it.key)
+                                        }
+                                        targetConfig.remove(it.key)
+                                        WPrefixModule.wprefixConfig.save()
+                                        player.sendMessage("${WPrefixPlugin.title} &e你成功删除了名为 ${it.key} 的配置".color())
+                                    }
+                                    addButton("&a&l取消".color())
+                                }
+                            })
+                        }
+                    }
+                    this.addButton("返回") { player -> player.showFormWindow(WPrefixMainGUI(player)) }
+                }
+
+            })
+        }
         this.addButton("返回") { player -> player.showFormWindow(WPrefixMainGUI(player)) }
     }
 
@@ -50,8 +77,9 @@ class WPrefixConfigGUI(parent: FormWindow)  : ResponsibleFormWindowSimple(
         player.showFormWindow(WPrefixMainGUI(player))
     }
 
+
     private fun ConfigGUI<WPrefixData>.setWPrefixConfigGUI() {
-        this.setTranslateMap(linkedMapOf(
+        val translateMap = linkedMapOf(
                 "content" to "内容",
                 "description" to "介绍",
                 "position" to "位置(只能填 LEFT 或者 RIGHT)",
@@ -60,6 +88,7 @@ class WPrefixConfigGUI(parent: FormWindow)  : ResponsibleFormWindowSimple(
                 "buffLevel" to "效果等级",
                 "canStack" to "能否堆叠",
                 "price" to "价格"
-        ))
+        )
+        this.setTranslateMap(translateMap)
     }
 }
